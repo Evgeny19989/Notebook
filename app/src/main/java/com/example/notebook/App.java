@@ -6,7 +6,7 @@ import androidx.room.Room;
 
 public class App extends Application {
 
-    public static App instance;
+    private static App instance;
 
     private NotebookDatabase database;
 
@@ -15,6 +15,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         database = Room.databaseBuilder(this, NotebookDatabase.class, "database")
+                .allowMainThreadQueries()
                 .build();
     }
 

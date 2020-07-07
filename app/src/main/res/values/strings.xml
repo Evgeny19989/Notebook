@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Notebook</string>
+    <string name="title">Заголовок</string>
+    <string name="delete">Удалить</string>
+    <string name="size_fonts">Размер шрифта</string>
+    <string name="color_fonts">Цвет</string>
+    <string name="save">Сохранить</string>
+    <string name="preview_text">Заметок нет </string>
+
 </resources>
