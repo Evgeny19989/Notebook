@@ -17,6 +17,10 @@ public class Note {
     @ColumnInfo(name = "text")
     private String text;
 
+
+
+
+
 //    @ColumnInfo(name = "done")
 //    private boolean done;
 //

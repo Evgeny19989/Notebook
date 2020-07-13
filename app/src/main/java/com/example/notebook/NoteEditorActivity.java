@@ -1,6 +1,5 @@
 package com.example.notebook;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class NoteEditorActivity extends AppCompatActivity {
@@ -31,6 +31,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
          titleText = findViewById(R.id.title_text);
          noteText = findViewById(R.id.note_text);
 
@@ -47,12 +48,21 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()== R.id.actions_save){
-            Note note = new Note();
-            note.setTitle(titleText.getText().toString());
-            note.setText(noteText.getText().toString());
+            if(titleText.getText().toString().equals("") || noteText.getText().toString().equals("")){
+                Toast.makeText(this,"Пустой заголовок или заметка " ,Toast.LENGTH_LONG).show();
+            }
+            else {
+                Note note = new Note();
+                note.setTitle(titleText.getText().toString());
+                note.setText(noteText.getText().toString());
+                dao.insert(note);
+                Toast.makeText(this,"Ура,Заметка добавлена" ,Toast.LENGTH_LONG).show();
+                titleText.setText("Заголовок");
+                noteText.setText("Заметка");
+            }
 
-            dao.insert(note);
         }
         return super.onOptionsItemSelected(item);
+
     }
 }

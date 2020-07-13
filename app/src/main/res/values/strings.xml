@@ -6,5 +6,6 @@
     <string name="color_fonts">Цвет</string>
     <string name="save">Сохранить</string>
     <string name="preview_text">Заметок нет </string>
+    <string name="text_title_note">Заметки</string>
 
 </resources>

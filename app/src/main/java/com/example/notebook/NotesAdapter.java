@@ -3,6 +3,7 @@ package com.example.notebook;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,15 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
     private List<Note> notes;
-    private OnClickItemListener listener;
+
+    Note note;
+
+    private OnClickItemListener listener = new OnClickItemListener() {
+        @Override
+        public void onClickItem(Note note) {
+
+        }
+    };
 
     public NotesAdapter(List<Note> notes) {
         this.notes = notes;
@@ -31,12 +40,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(notes.get(position));
         holder.itemView.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onClickItem(notes.get(position));
-                    }
-                }
+                v -> listener.onClickItem(notes.get(position))
+
+
         );
     }
 
@@ -47,9 +53,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
+        private CheckBox checkBox;
+
+
+
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
+
+
         }
 
         public void bind(Note note) {
@@ -58,11 +71,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
     }
 
+    public interface OnNoteListener{
+        void onNoteClick(int pos);
+    }
+
     public void setListener(OnClickItemListener listener) {
         this.listener = listener;
     }
 
     private interface OnClickItemListener {
         void onClickItem(Note note);
+
     }
 }
