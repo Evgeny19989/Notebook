@@ -1,9 +1,5 @@
 package com.example.notebook;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,15 +7,15 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class NoteEditorActivity extends AppCompatActivity {
-
 
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private EditText titleText;
     private EditText noteText;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +26,8 @@ public class NoteEditorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
          titleText = findViewById(R.id.title_text);
          noteText = findViewById(R.id.note_text);
-
-
     }
 
     @Override
@@ -63,6 +55,5 @@ public class NoteEditorActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
-
     }
 }

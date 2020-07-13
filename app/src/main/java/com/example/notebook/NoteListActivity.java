@@ -1,11 +1,7 @@
 package com.example.notebook;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,18 +9,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Date;
 import java.util.List;
 
-public class NoteListActivity extends AppCompatActivity implements View.OnClickListener , NotesAdapter.OnNoteListener {
+public class NoteListActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
     private TextView preview_text;
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
@@ -52,14 +45,20 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
 
         List<Note> notes = dao.getNotes();
+
         NotesAdapter adapter = new NotesAdapter(notes);
+        adapter.setOnClickItemListener(
+                noteId -> {
+                    Intent intent = new Intent(this, DetailNoteActivity.class);
+                    intent.putExtra(DetailNoteActivity.KEY_NOTE_ID, noteId);
+                    startActivity(intent);
+                }
+        );
+
         noteList.setAdapter(adapter);
-        Toast.makeText(this, notes.size()+"", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, notes.size() + "", Toast.LENGTH_LONG).show();
 
-        RecyclerView.ItemDecoration divider = new DividerItemDecoration(this ,DividerItemDecoration.VERTICAL);
-        noteList.addItemDecoration(divider);
-
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0 ,ItemTouchHelper.LEFT) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -72,44 +71,32 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
                 dao.delete(notes.remove(pos));
 
 
-                if(!notes.isEmpty()){
+                if (!notes.isEmpty()) {
                     preview_text.setText("");
                 }
 
 
-                if(notes.isEmpty()){
+                if (notes.isEmpty()) {
                     textTitle.setText("");
                 }
 
                 adapter.notifyDataSetChanged();
-        }
+            }
         });
-        if(!notes.isEmpty()){
+        if (!notes.isEmpty()) {
             preview_text.setText("");
         }
 
 
-        if(notes.isEmpty()){
+        if (notes.isEmpty()) {
             textTitle.setText("");
         }
-    helper.attachToRecyclerView(noteList);
-
-
-
+        helper.attachToRecyclerView(noteList);
     }
-
-
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this , NoteEditorActivity.class);
+        Intent intent = new Intent(this, NoteEditorActivity.class);
         startActivity(intent);
     }
-
-    @Override
-    public void onNoteClick(int pos) {
-
-    }
 }
-
-

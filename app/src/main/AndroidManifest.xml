@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.notebook">
 
     <application
@@ -11,16 +10,16 @@
         android:roundIcon="@drawable/ic_launcher_background"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoteEditorActivity"
+
+        <activity android:name=".DetailNoteActivity" />
+
+        <activity
+            android:name=".NoteEditorActivity"
             android:parentActivityName=".NoteListActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity
+            android:name=".NoteListActivity"
             android:windowSoftInputMode="stateVisible|adjustResize">
-
-
-        </activity>
-
-        <activity android:name=".NoteListActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
