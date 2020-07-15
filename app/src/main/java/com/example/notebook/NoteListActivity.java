@@ -3,6 +3,8 @@ package com.example.notebook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
     private Toolbar toolbar;
     private TextView preview_text;
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
-    private TextView textTitle;
+
 
 
     RecyclerView.Adapter mAdapter;
@@ -32,6 +34,8 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         RecyclerView noteList = findViewById(R.id.noteList);
         noteList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -39,7 +43,6 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         addNote.setOnClickListener(this);
 
         preview_text = findViewById(R.id.preview_text);
-        textTitle = findViewById(R.id.titleNote);
 
         toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -76,9 +79,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
                 }
 
 
-                if (notes.isEmpty()) {
-                    textTitle.setText("");
-                }
+
 
                 adapter.notifyDataSetChanged();
             }
@@ -88,9 +89,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         }
 
 
-        if (notes.isEmpty()) {
-            textTitle.setText("");
-        }
+
         helper.attachToRecyclerView(noteList);
     }
 
@@ -99,4 +98,6 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, NoteEditorActivity.class);
         startActivity(intent);
     }
+
+
 }
