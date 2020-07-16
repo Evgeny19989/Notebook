@@ -25,10 +25,11 @@ public class NoteEditorActivity extends AppCompatActivity {
     public static String note_Title;
     public static String note_Text;
     public static String title; // intent putExtra
-    public static String id;
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private EditText titleText;
     private EditText noteText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,15 @@ public class NoteEditorActivity extends AppCompatActivity {
 
          titleText = findViewById(R.id.title_text);
          noteText = findViewById(R.id.note_text);
+
+         Intent intent = getIntent();
+        int id = intent.getIntExtra(KEY_NOTE_ID , -1);
+        if(id > 0){
+            Note note = dao.getNote(id);
+            titleText.setText(note.getTitle());
+            noteText.setText(note.getTitle());
+        }
+
 
 
     }
@@ -57,26 +67,26 @@ public class NoteEditorActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int id = intent.getIntExtra(KEY_NOTE_ID , -1);
 
-        if(id > 0){
-            Toast.makeText(this, "EDIT ", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            if (item.getItemId() == R.id.actions_save) {
+        if (item.getItemId() == R.id.actions_save) {
+            if (id > 0) {
+                Note note = dao.getNote(id);
+                note.setTitle(titleText.getText().toString());
+                note.setText(noteText.getText().toString());
+                dao.update(note);
+                Toast.makeText(this, "Изменение сохранено ", Toast.LENGTH_SHORT).show();
+            }
+            else {
 
                 Note note = new Note();
                 note.setTitle(titleText.getText().toString());
                 note.setText(noteText.getText().toString());
                 dao.insert(note);
                 closeKeyBoard();
-                Toast.makeText(this, "Успешно сохранено", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Заметка создана", Toast.LENGTH_SHORT).show();
+
+
             }
         }
-
-
-
-
-
-
 
         return super.onOptionsItemSelected(item);
     }

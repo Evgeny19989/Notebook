@@ -34,6 +34,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         RecyclerView noteList = findViewById(R.id.noteList);
@@ -97,6 +98,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
         startActivity(intent);
+
     }
 
 
