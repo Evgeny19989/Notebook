@@ -17,6 +17,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.List;
+
 import static com.example.notebook.DetailNoteActivity.KEY_NOTE_ID;
 
 public class NoteEditorActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class NoteEditorActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +41,11 @@ public class NoteEditorActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
          titleText = findViewById(R.id.title_text);
          noteText = findViewById(R.id.note_text);
@@ -48,7 +55,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         if(id > 0){
             Note note = dao.getNote(id);
             titleText.setText(note.getTitle());
-            noteText.setText(note.getTitle());
+            noteText.setText(note.getText());
         }
 
 
@@ -69,6 +76,7 @@ public class NoteEditorActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.actions_save) {
             if (id > 0) {
+
                 Note note = dao.getNote(id);
                 note.setTitle(titleText.getText().toString());
                 note.setText(noteText.getText().toString());
@@ -80,9 +88,13 @@ public class NoteEditorActivity extends AppCompatActivity {
                 Note note = new Note();
                 note.setTitle(titleText.getText().toString());
                 note.setText(noteText.getText().toString());
-                dao.insert(note);
                 closeKeyBoard();
+                int x = note.getId();
+                intent.putExtra("id",x);
+                setResult(RESULT_OK, intent);
+                dao.insert(note);
                 Toast.makeText(this, "Заметка создана", Toast.LENGTH_SHORT).show();
+                finish();
 
 
             }
@@ -97,5 +109,14 @@ public class NoteEditorActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken() ,0);
         }
+
    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
 }

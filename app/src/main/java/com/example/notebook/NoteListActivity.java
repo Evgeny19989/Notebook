@@ -2,6 +2,7 @@ package com.example.notebook;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,14 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity implements View.OnClickListener {
+    private final static String TAG = "MainActivity";
     private Toolbar toolbar;
     private TextView preview_text;
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
-
-
-
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +54,10 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
                     Intent intent = new Intent(this, DetailNoteActivity.class);
                     intent.putExtra(DetailNoteActivity.KEY_NOTE_ID, noteId);
                     startActivity(intent);
+
                 }
         );
+
 
         noteList.setAdapter(adapter);
         Toast.makeText(this, notes.size() + "", Toast.LENGTH_LONG).show();
@@ -92,14 +92,32 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
 
 
         helper.attachToRecyclerView(noteList);
+
+
     }
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
-        startActivity(intent);
+       startActivityForResult(intent, 1);
+
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data == null){return;}
+        if(requestCode == 1) {
+            int id = data.getIntExtra("id", -1);
+            System.out.println(id);
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 }
+

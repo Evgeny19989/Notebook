@@ -52,6 +52,7 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent(this, NoteEditorActivity.class);
         intent.putExtra(KEY_NOTE_ID ,noteId );
         startActivity(intent);
+
     }
 
 }
