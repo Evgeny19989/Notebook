@@ -1,6 +1,7 @@
 package com.example.notebook;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +24,8 @@ import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String TAG = "MainActivity";
-    private Toolbar toolbar;
-    private TextView preview_text;
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
+    private   NotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +41,13 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         FloatingActionButton addNote = findViewById(R.id.addNote);
         addNote.setOnClickListener(this);
 
-        preview_text = findViewById(R.id.preview_text);
 
-        toolbar = findViewById(R.id.my_toolbar);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
         List<Note> notes = dao.getNotes();
 
-        NotesAdapter adapter = new NotesAdapter(notes);
+        adapter = new NotesAdapter(notes);
         adapter.setOnClickItemListener(
                 noteId -> {
                     Intent intent = new Intent(this, DetailNoteActivity.class);
@@ -67,31 +66,18 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
 
-                int pos = target.getAdapterPosition();
-                dao.delete(notes.remove(pos));
-
-
-                if (!notes.isEmpty()) {
-                    preview_text.setText("");
-                }
-
-
-
-
+                dao.delete(adapter.getNoteAt(target.getAdapterPosition()));
+                adapter.setNotes(dao.getNotes());
                 adapter.notifyDataSetChanged();
             }
         });
-        if (!notes.isEmpty()) {
-            preview_text.setText("");
-        }
-
-
 
         helper.attachToRecyclerView(noteList);
+
+
 
 
     }
@@ -99,9 +85,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
-       startActivityForResult(intent, 1);
-
-
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -109,14 +93,20 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if(data == null){return;}
         if(requestCode == 1) {
-            int id = data.getIntExtra("id", -1);
+            int id = data.getIntExtra("id",-1);
             System.out.println(id);
+
+            adapter.setNotes(dao.getNotes());
+            adapter.notifyDataSetChanged();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        adapter.setNotes(dao.getNotes());
+        adapter.notifyDataSetChanged();
+
 
     }
 }

@@ -17,6 +17,11 @@ public class Note {
     @ColumnInfo(name = "text")
     private String text;
 
+    @ColumnInfo(name = "date")
+    private String date;
+
+    @ColumnInfo(name = "color")
+    private String color;
 
 
 
@@ -27,7 +32,17 @@ public class Note {
 //    public Note(boolean done) {
 //        this.done = done;
 //    }
+    public String getColor(){
+        return color;
+    }
 
+    public void setColor(String color){
+        this.color = color;
+    }
+
+    public String getDate(){
+        return date;
+    }
 
     public int getId() {
         return id;
@@ -51,6 +66,10 @@ public class Note {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void  setDate(String date){
+        this.date =date;
     }
 
 //    public boolean isDone() {

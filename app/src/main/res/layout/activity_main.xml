@@ -28,14 +28,6 @@
         android:onClick="onClick"
         android:src="@drawable/ic_add" />
 
-    <TextView
-        android:id="@+id/preview_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/preview_text"
-        android:textSize="24sp"/>
+
 
 </RelativeLayout>

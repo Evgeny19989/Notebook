@@ -19,6 +19,8 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
     public static final String KEY_NOTE_ID = "key_note_id";
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private int noteId;
+    TextView textNote;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
         noteId = getIntent.getIntExtra(KEY_NOTE_ID, -1);
         Note note = dao.getNote(noteId);
         //Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         DetailNoteActivity.this.setSupportActionBar(toolbar);
         toolbar.setTitle(note.getTitle());
         setSupportActionBar(toolbar);
@@ -38,7 +40,7 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
             onBackPressed(); // Implemented by activity
         });
         //Note text
-        TextView textNote = findViewById(R.id.text_note);
+        textNote = findViewById(R.id.text_note);
         textNote.setText(note.getText());
         // Button edit
         FloatingActionButton editNote = findViewById(R.id.buttonEdit);
@@ -55,4 +57,10 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        toolbar.setTitle(dao.getNote(noteId).getTitle());
+        textNote.setText(dao.getNote(noteId).getText());
+    }
 }

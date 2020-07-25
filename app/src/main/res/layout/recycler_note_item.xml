@@ -13,12 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="274dp"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingTop="16dp"
@@ -26,6 +25,15 @@
             android:paddingBottom="16dp"
             android:textSize="20sp"
             tools:text="Название заметки" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_weight="1"
+            tools:text="23.07.2020"
+            android:textSize="11sp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

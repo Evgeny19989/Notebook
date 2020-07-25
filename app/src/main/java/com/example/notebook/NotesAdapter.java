@@ -1,11 +1,13 @@
 package com.example.notebook;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -13,9 +15,8 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
     private List<Note> notes;
-    private Note note;
     private OnClickItemListener listener;
-
+    private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     public NotesAdapter(List<Note> notes) {
         this.notes = notes;
     }
@@ -46,14 +47,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
+        private TextView date;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
+            date = itemView.findViewById(R.id.dateText);
+
+
         }
 
         public void bind(Note note) {
             title.setText(note.getTitle());
+            date.setText(note.getDate());
+            ((CardView) itemView ).setCardBackgroundColor(Color.parseColor(note.getColor()));
         }
     }
 
@@ -64,4 +71,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public interface OnClickItemListener {
         void onClickItem(int noteId);
     }
+
+   public void setNotes(List<Note> notes){
+        this.notes = notes;
+   }
+
+   public Note getNoteAt(int pos){
+     return notes.get(pos);
+   }
 }
