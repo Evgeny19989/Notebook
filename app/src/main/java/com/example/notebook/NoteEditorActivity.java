@@ -54,18 +54,7 @@ public class NoteEditorActivity extends AppCompatActivity {
 
          spinnerAdapter = new SpinnerAdapter(this);
 
-         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                note.setColor(spinnerAdapter.getItem(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         spinner.setAdapter(spinnerAdapter);
     }
