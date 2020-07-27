@@ -1,22 +1,17 @@
 package com.example.notebook;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import static com.example.notebook.R.string.toolbar_title;
 
 public class DetailNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,21 +26,21 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
         Intent getIntent = getIntent();
-        // Title
+
         noteId = getIntent.getIntExtra(KEY_NOTE_ID, -1);
         Note note = dao.getNote(noteId);
-        //Toolbar
+
         toolbar = findViewById(R.id.toolbar);
         DetailNoteActivity.this.setSupportActionBar(toolbar);
         toolbar.setTitle(note.getTitle());
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> {
-            onBackPressed(); // Implemented by activity
+            onBackPressed();
         });
-        //Note text
+
         textNote = findViewById(R.id.text_note);
         textNote.setText(note.getText());
-        // Button edit
+
         FloatingActionButton editNote = findViewById(R.id.buttonEdit);
         editNote.setOnClickListener(this);
 

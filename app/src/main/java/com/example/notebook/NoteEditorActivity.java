@@ -25,19 +25,19 @@ public class NoteEditorActivity extends AppCompatActivity {
     private EditText titleText;
     private EditText noteText;
     private Spinner spinner ;
-    SpinnerAdapter spinnerAdapter;
-    Note note ;
-    String selected;
-    int id;
-    Intent intent;
-    int sizeText = 16 ;
-    ImageView deleteTitle;
+    private SpinnerAdapter spinnerAdapter;
+    private  Note note ;
+    private String selected;
+    private int id;
+    private Intent intent;
+    private int sizeText = 16 ;
+    private ImageView deleteTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
 
-        //Toolbar
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
@@ -49,7 +49,6 @@ public class NoteEditorActivity extends AppCompatActivity {
          noteText = findViewById(R.id.note_text);
          deleteTitle = findViewById(R.id.delete_text_title);
 
-         //spinner
          spinner = findViewById(R.id.spinner);
          selected = spinner.getSelectedItem().toString();
          spinnerAdapter = new SpinnerAdapter(this);

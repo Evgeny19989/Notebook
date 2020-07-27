@@ -27,7 +27,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
     private final static String TAG = "MainActivity";
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private   NotesAdapter adapter;
-    List<Note> notes;
+    private List<Note> notes;
 
 
     @Override
@@ -109,7 +109,6 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
                 item.setChecked(true);
             notes = dao.getNotes();
             Collections.sort(notes,ToDoListComparator.getDateComparator());
-            print(notes);
             adapter.setNotes(notes);
             adapter.notifyDataSetChanged();
             break;
@@ -121,7 +120,6 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
                 item.setChecked(true);
             notes = dao.getNotes();
             Collections.sort(notes,ToDoListComparator.getNameComparator());
-            print(notes);
             adapter.setNotes(notes);
             adapter.notifyDataSetChanged();
             break;
@@ -137,13 +135,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
 
 
     }
-    public void print(Collection collection){
-        Iterator<Note> iterator = notes.iterator();
-        while(iterator.hasNext()){
-            Note note = iterator.next();
-            System.out.println(note.getTitle() + "  " + note.getDate());
-        }
-    }
+
 
 }
 
