@@ -18,8 +18,8 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
     public static final String KEY_NOTE_ID = "key_note_id";
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private int noteId;
-    TextView textNote;
-    Toolbar toolbar;
+    private TextView textNote;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
