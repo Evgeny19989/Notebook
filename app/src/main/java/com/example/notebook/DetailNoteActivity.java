@@ -2,13 +2,17 @@ package com.example.notebook;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +30,6 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
-
         Intent getIntent = getIntent();
         // Title
         noteId = getIntent.getIntExtra(KEY_NOTE_ID, -1);
@@ -54,7 +57,6 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent(this, NoteEditorActivity.class);
         intent.putExtra(KEY_NOTE_ID ,noteId );
         startActivity(intent);
-
     }
 
     @Override
@@ -62,5 +64,7 @@ public class DetailNoteActivity extends AppCompatActivity implements View.OnClic
         super.onResume();
         toolbar.setTitle(dao.getNote(noteId).getTitle());
         textNote.setText(dao.getNote(noteId).getText());
+        textNote.setBackgroundColor(Color.parseColor(dao.getNote(noteId).getColor()));
+
     }
 }

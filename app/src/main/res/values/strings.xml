@@ -6,6 +6,7 @@
     <string name="color_fonts">Цвет</string>
     <string name="save">Сохранить</string>
     <string name="toolbar_title"></string>
+    <string name="todo">TODO</string>
     <string-array name="color_array">
         <item>#FFFFFF</item>
         <item>#EF9A9A</item>

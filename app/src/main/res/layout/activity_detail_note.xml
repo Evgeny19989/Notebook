@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="onClick"
-    tools:context=".DetailNoteActivity">
+    tools:context=".DetailNoteActivity"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,10 +20,11 @@
         app:titleTextColor="@color/colorWhite" />
 
     <TextView
+        android:autoLink="web"
+        android:layout_marginTop="55dp"
         android:id="@+id/text_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_height="match_parent"
         android:padding="16dp"
         android:textIsSelectable="true"
         android:textSize="18sp"

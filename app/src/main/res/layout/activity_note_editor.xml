@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,60 +11,76 @@
     <include
         layout="@layout/tool_bar"/>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/spinner_cardview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        android:background="@android:color/transparent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/my_toolbar">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:entries="@array/color_array" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
             android:id="@+id/title_cardview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="6dp"
             app:cardCornerRadius="4dp"
-            app:cardElevation="4dp">
-
-            <EditText
-                android:id="@+id/title_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:hint="Задача  "
-                android:padding="8dp"
-                android:textSize="24sp" />
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/spinner_cardview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="6dp"
-            android:orientation="horizontal"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_below="@+id/my_toolbar"
+            android:layout_toStartOf="@+id/spinner_cardview">
 
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:entries="@array/color_array" />
+        <EditText
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/colorWhite"
+            android:hint="Задача  "
+            android:padding="8dp"
+            android:textSize="24sp" />
 
-        </androidx.cardview.widget.CardView>
+        <ImageView
+                android:id="@+id/delete_text_title"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="@string/todo"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:focusable="true"/>
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
-<androidx.cardview.widget.CardView
+
+    <androidx.cardview.widget.CardView
     android:id="@+id/note_cardview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="6dp"
     app:cardCornerRadius="4dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:layout_below="@+id/title_cardview">
 
     <EditText
         android:id="@+id/note_text"
@@ -76,4 +92,4 @@
         android:textSize="16sp" />
 
 </androidx.cardview.widget.CardView>
-</LinearLayout>
+</RelativeLayout>

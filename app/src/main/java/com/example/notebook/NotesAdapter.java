@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private List<Note> notes;
     private OnClickItemListener listener;
-    private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     public NotesAdapter(List<Note> notes) {
         this.notes = notes;
     }
@@ -53,8 +51,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             super(itemView);
             title = itemView.findViewById(R.id.title);
             date = itemView.findViewById(R.id.dateText);
-
-
         }
 
         public void bind(Note note) {

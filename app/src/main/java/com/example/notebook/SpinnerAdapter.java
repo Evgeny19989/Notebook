@@ -45,8 +45,6 @@ public class SpinnerAdapter extends BaseAdapter {
             cardview.setCardBackgroundColor(Color.parseColor(mColorNotes[position]));
 
             return view;
-
-
     }
 
     public int getColorIndex(String selectedColorNote){

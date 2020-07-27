@@ -7,14 +7,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
@@ -29,17 +26,20 @@ public class NoteEditorActivity extends AppCompatActivity {
     private EditText noteText;
     private Spinner spinner ;
     SpinnerAdapter spinnerAdapter;
-    Note note = new Note();
+    Note note ;
     String selected;
-
+    int id;
+    Intent intent;
+    int sizeText = 16 ;
+    ImageView deleteTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
 
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -47,16 +47,25 @@ public class NoteEditorActivity extends AppCompatActivity {
 
          titleText = findViewById(R.id.title_text);
          noteText = findViewById(R.id.note_text);
+         deleteTitle = findViewById(R.id.delete_text_title);
+
+         //spinner
          spinner = findViewById(R.id.spinner);
-
          selected = spinner.getSelectedItem().toString();
-         Toast.makeText(getApplicationContext(), selected,Toast.LENGTH_SHORT).show();
-
          spinnerAdapter = new SpinnerAdapter(this);
+         spinner.setAdapter(spinnerAdapter);
 
+        intent = getIntent();
+        id = intent.getIntExtra(KEY_NOTE_ID , -1);
 
+        if(id > 0) {
+            note = dao.getNote(id);
+            spinner.setSelection(spinnerAdapter.getColorIndex(note.getColor()));
+            titleText.setText(note.getTitle());
+            noteText.setText(note.getText());
+        }
 
-        spinner.setAdapter(spinnerAdapter);
+        deleteTitle.setOnClickListener(v -> titleText.setText(""));
     }
 
     @Override
@@ -68,11 +77,11 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent = getIntent();
-        int id = intent.getIntExtra(KEY_NOTE_ID , -1);
+
         selected = spinner.getSelectedItem().toString();
 
-        if (item.getItemId() == R.id.actions_save) {
+        switch(item.getItemId()) {
+           case R.id.actions_save:
             if (id < 0) {
                 note = new Note();
                 note.setTitle(titleText.getText().toString());
@@ -82,27 +91,27 @@ public class NoteEditorActivity extends AppCompatActivity {
                 dao.insert(note);
                 dao.update(note);
                 closeKeyBoard();
-                int x = 1 ; // edit type send flag
-                System.out.println(x);
-                intent.putExtra("id",x);
+                intent.putExtra("EditActivity" , true);
                 setResult(RESULT_OK, intent);
                 Toast.makeText(this, "Заметка создана", Toast.LENGTH_SHORT).show();
                 finish();
             }
             else{
-                note = dao.getNote(id);
                 note.setTitle(titleText.getText().toString());
                 note.setText(noteText.getText().toString());
-                note.setDate(getCurrentDate());
                 note.setColor(selected);
                 dao.update(note);
                 Toast.makeText(this, "Изменение сохранено ", Toast.LENGTH_SHORT).show();
+                closeKeyBoard();
                 finish();
             }
+            break;
+           case R.id.size_text:
+               noteText.setTextSize(sizeText += 4);
+               if(sizeText == 28) {sizeText = 16;}
+               break;
 
-; }
-
-        return super.onOptionsItemSelected(item);
+}       return super.onOptionsItemSelected(item);
     }
 
    private void closeKeyBoard(){
@@ -125,5 +134,9 @@ public class NoteEditorActivity extends AppCompatActivity {
         return myDate.format(now.getTime());
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        closeKeyBoard();
+    }
 }

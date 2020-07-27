@@ -1,15 +1,13 @@
 package com.example.notebook;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,18 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String TAG = "MainActivity";
     private NotebookDao dao = App.getInstance().getDatabase().getNotebookDao();
     private   NotesAdapter adapter;
+    List<Note> notes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -41,12 +43,10 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         FloatingActionButton addNote = findViewById(R.id.addNote);
         addNote.setOnClickListener(this);
 
-
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        List<Note> notes = dao.getNotes();
-
+        notes = dao.getNotes();
         adapter = new NotesAdapter(notes);
         adapter.setOnClickItemListener(
                 noteId -> {
@@ -56,10 +56,7 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
 
                 }
         );
-
-
         noteList.setAdapter(adapter);
-        Toast.makeText(this, notes.size() + "", Toast.LENGTH_LONG).show();
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
@@ -68,7 +65,6 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
             }
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
-
                 dao.delete(adapter.getNoteAt(target.getAdapterPosition()));
                 adapter.setNotes(dao.getNotes());
                 adapter.notifyDataSetChanged();
@@ -76,13 +72,17 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
         });
 
         helper.attachToRecyclerView(noteList);
-
-
-
-
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        System.out.println("create Menu");
+        return true;
+}
+
+@Override
     public void onClick(View v) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
         startActivityForResult(intent, 1);
@@ -92,13 +92,41 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data == null){return;}
-        if(requestCode == 1) {
-            int id = data.getIntExtra("id",-1);
-            System.out.println(id);
-
-            adapter.setNotes(dao.getNotes());
-            adapter.notifyDataSetChanged();
+        boolean Flag = data.getBooleanExtra("EditActivity" , false);
+           if(Flag){
+               adapter.setNotes(dao.getNotes());
+               adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+        case R.id.sort_date:
+            if (item.isChecked())
+                item.setChecked(false);
+            else
+                item.setChecked(true);
+            notes = dao.getNotes();
+            Collections.sort(notes,ToDoListComparator.getDateComparator());
+            print(notes);
+            adapter.setNotes(notes);
+            adapter.notifyDataSetChanged();
+            break;
+
+        case R.id.sort_title:
+            if (item.isChecked())
+                item.setChecked(false);
+            else
+                item.setChecked(true);
+            notes = dao.getNotes();
+            Collections.sort(notes,ToDoListComparator.getNameComparator());
+            print(notes);
+            adapter.setNotes(notes);
+            adapter.notifyDataSetChanged();
+            break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,5 +137,13 @@ public class NoteListActivity extends AppCompatActivity implements View.OnClickL
 
 
     }
+    public void print(Collection collection){
+        Iterator<Note> iterator = notes.iterator();
+        while(iterator.hasNext()){
+            Note note = iterator.next();
+            System.out.println(note.getTitle() + "  " + note.getDate());
+        }
+    }
+
 }
 

@@ -5,8 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "notes")
-public class Note {
-
+public class Note   {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -23,15 +22,6 @@ public class Note {
     @ColumnInfo(name = "color")
     private String color;
 
-
-
-
-//    @ColumnInfo(name = "done")
-//    private boolean done;
-//
-//    public Note(boolean done) {
-//        this.done = done;
-//    }
     public String getColor(){
         return color;
     }
@@ -72,7 +62,4 @@ public class Note {
         this.date =date;
     }
 
-//    public boolean isDone() {
-//        return done;
-//    }
 }
